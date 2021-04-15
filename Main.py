@@ -10,7 +10,7 @@ Final stats are calculated by adding all of these modes up
 Total_games_played = wins + losses + ties
 """
 name = 'thatbananaking'
-api = 'ENTER_KEY_HERE
+api = 'ENTER_KEY_HERE'
 
 
 def uuid(ign):
