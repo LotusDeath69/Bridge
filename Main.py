@@ -3,7 +3,7 @@ import requests
 Bridge_Duel =  solo mode (1v1)
 Bridge_doubles = double mode (2v2)
 Bridge_four = 4s mode (4v4)
-There are also modes for 3v3v3v3 and 2v2v2v2
+There are also modes for 3v3v3v3 and 2v2v2v2 but they will not be included
 Final stats are calculated by adding all of these modes up
 Total_games_played = wins + losses + ties
 """
