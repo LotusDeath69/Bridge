@@ -7,7 +7,7 @@ There are also modes for 3v3v3v3 and 2v2v2v2
 Final stats are calculated by adding all of these modes up
 Total_games_played = wins + losses + ties
 """
-api = 'INSERT_KEY_HERE'
+api = '9af32713-b277-4a0b-84e8-7a54a748bccf'
 
 
 def uuid(ign):
@@ -19,6 +19,18 @@ def formatPercentage(x):
     return "{:.0%}".format(x)
 
 
+def CalculateStat(mode, data, stat):
+    total = 0
+    for i in mode:
+        try:
+            total += data['player']['stats']['Duels'][f'bridge_{i}_{stat}']
+        except KeyError:
+            continue
+        
+    if total == 0:
+        return f'Player has no {stat}'
+    return total 
+
 def stats(ign, key):
     data = requests.get(f'https://api.hypixel.net/player?key={key}&uuid={uuid(ign)}').json()
     try:
@@ -27,34 +39,11 @@ def stats(ign, key):
     except KeyError:
         return f'{ign} has no bridge stats'
     
-    total_wins = 0
-    total_losses = 0
-    total_games_played = 0
-    total_goals = 0
     modes = ['duel', 'doubles', 'four']
-    for i in modes:
-        try:
-            total_wins += data['player']['stats']['Duels'][f'bridge_{i}_wins']
-        except KeyError:
-            continue
-    for i in modes:
-        try:
-            total_losses += data['player']['stats']['Duels'][f'bridge_{i}_losses']
-        except KeyError:
-            continue
-
-    for i in modes:
-        try:
-            total_games_played += data['player']['stats']['Duels'][f'bridge_{i}_rounds_played']
-        except KeyError:
-            continue
-
-    for i in modes:
-        try:
-            total_goals += data['player']['stats']['Duels'][f'bridge_{i}_goals']
-        except KeyError:
-            continue
-    
+    total_wins = CalculateStat(modes, data, 'wins')
+    total_losses = CalculateStat(modes, data, 'losses')
+    total_games_played = CalculateStat(modes, data, 'rounds_played')
+    total_goals = CalculateStat(modes, data, 'goals')
     KD_ratio = round(kills/deaths, 2)
     winrate = formatPercentage(round(total_wins / (total_losses + total_wins), 2))
     ties = total_games_played - (total_wins + total_losses)
