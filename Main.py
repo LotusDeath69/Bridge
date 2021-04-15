@@ -1,5 +1,5 @@
 import requests
-import secrets
+
 """
 In Beta, DM Tree#7109 if you find any errors
 Bridge_Duel =  solo mode (1v1)
@@ -10,6 +10,7 @@ Final stats are calculated by adding all of these modes up
 Total_games_played = wins + losses + ties
 """
 name = 'thatbananaking'
+api = 'ENTER_KEY_HERE
 
 
 def uuid(ign):
@@ -60,4 +61,4 @@ def stats(ign, key):
     f' {winrate} Games Played: {total_games_played} goals: {total_goals}'
 
 
-print(stats(name, secrets.api))
+print(stats(name, api))
