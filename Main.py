@@ -1,18 +1,25 @@
 import requests
 """
+In Beta, DM Tree#7109 if you find any errors
 Bridge_Duel =  solo mode (1v1)
 Bridge_doubles = double mode (2v2)
 Bridge_four = 4s mode (4v4)
-There are also modes for 3v3v3v3 and 2v2v2v2
+There are also modes for 3v3v3v3 and 2v2v2v2 but they WILL NOT be included
 Final stats are calculated by adding all of these modes up
 Total_games_played = wins + losses + ties
 """
 api = '9af32713-b277-4a0b-84e8-7a54a748bccf'
+name = 'thatbananaking'
 
 
 def uuid(ign):
-    data = requests.get(f'https://api.mojang.com/users/profiles/minecraft/{ign}').json()
-    return data['id']
+    try:
+        data = requests.get(f'https://api.mojang.com/users/profiles/minecraft/{ign}').json()
+        return data['id']
+    except ValueError:
+        # print('Decoding JSON has failed')
+        print('Invalid username \nPlease try again')
+        exit()
 
 
 def formatPercentage(x):
@@ -26,10 +33,11 @@ def CalculateStat(mode, data, stat):
             total += data['player']['stats']['Duels'][f'bridge_{i}_{stat}']
         except KeyError:
             continue
-        
+
     if total == 0:
         return f'Player has no {stat}'
     return total 
+
 
 def stats(ign, key):
     data = requests.get(f'https://api.hypixel.net/player?key={key}&uuid={uuid(ign)}').json()
@@ -52,4 +60,4 @@ def stats(ign, key):
     f' {winrate} Games Played: {total_games_played} goals: {total_goals}'
 
 
-print(stats('thatbananaking', api))
+print(stats(name, api))
